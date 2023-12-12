@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:31:48 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2023/12/11 18:26:48 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2023/12/12 12:30:12 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,29 +108,29 @@ int	check(int fd, char *remainder, char **line)
 
 char	*get_next_line(int fd)
 {
-	static char	r[OPEN_MAX][BUFFER_SIZE + (size_t)1];
-	char		reader[BUFFER_SIZE + (size_t)1];
+	static char	r[2][OPEN_MAX][BUFFER_SIZE + (size_t)1];
 	char		*line;
 	size_t		i;
 
-	if (!check(fd, r[fd], &line))
+	if (!check(fd, r[0][fd], &line))
 		return (NULL);
 	i = 0;
-	while (!r[fd][i] && i < BUFFER_SIZE)
+	while (!r[0][fd][i] && i < BUFFER_SIZE)
 		i++;
-	if (!ystrchr(&r[fd][i], '\n'))
+	if (!ystrchr(&r[0][fd][i], '\n'))
 	{
-		line = ystrdup(&r[fd][i]);
-		ymemset(r[fd], 0, BUFFER_SIZE);
+		line = ystrdup(&r[0][fd][i]);
+		ymemset(r[0][fd], 0, BUFFER_SIZE);
 		if (!line)
 			return (NULL);
 	}
-	else if (ystrchr(&r[fd][i], '\n'))
+	else if (ystrchr(&r[0][fd][i], '\n'))
 	{
-		line = ysubstr(&r[fd][i], 0,
-				(ystrchr(&r[fd][i], '\n') + 1) - &r[fd][i]);
-		ymemset(&r[fd][i], 0, (ystrchr(&r[fd][i], '\n') + 1) - &r[fd][i]);
+		line = ysubstr(&r[0][fd][i], 0,
+				(ystrchr(&r[0][fd][i], '\n') + 1) - &r[0][fd][i]);
+		ymemset(&r[0][fd][i], 0,
+			(ystrchr(&r[0][fd][i], '\n') + 1) - &r[0][fd][i]);
 		return (line);
 	}
-	return (yget_line(fd, r[fd], reader, &line));
+	return (yget_line(fd, r[0][fd], r[1][0], &line));
 }
