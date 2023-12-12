@@ -6,7 +6,7 @@
 /*   By: yel-yaqi <yel-yaqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 23:31:48 by yel-yaqi          #+#    #+#             */
-/*   Updated: 2023/12/12 12:30:12 by yel-yaqi         ###   ########.fr       */
+/*   Updated: 2023/12/12 18:15:24 by yel-yaqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	check(int fd, char *remainder, char **line)
 {
 	if (BUFFER_SIZE == 0 || fd < 0)
 		return (0);
-	if (BUFFER_SIZE == 0 || fd < 0 || read(fd, 0, 0) < 0)
+	if (BUFFER_SIZE == 0 || fd < 0 || read(fd, 0, 0) < 0 || fd >= OPEN_MAX)
 		return (ymemset(remainder, 0, BUFFER_SIZE), 0);
 	*line = NULL;
 	return (1);
